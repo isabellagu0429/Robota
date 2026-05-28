@@ -14,14 +14,14 @@ Motor trayLiftMotor(7);
 // --- Drivetrain Configuration ---
 Drivetrain drivetrain(&leftMotors, // left motor group
                       &rightMotors, // right motor group
-                      12.0, // track width (12 inches)
+                      10.5, // track width (10.5 inches)
                       Omniwheel::NEW_4, // using new 4" omnis
                       200, // drivetrain rpm
                       2); // horizontal drift (2 is standard for normal drive)
 
 // --- Odometry Sensors ---
 Imu imu(17); 
-OdomSensors sensors(nullptr, // vertical tracking wheel 1
+OdomSensors sensors(nullptr, // vertical tracking wheel 1g
                     nullptr, // vertical tracking wheel 2
                     nullptr, // horizontal tracking wheel 1
                     nullptr, // horizontal tracking wheel 2
@@ -29,8 +29,8 @@ OdomSensors sensors(nullptr, // vertical tracking wheel 1
 
 // --- PID Controllers ---
 // Placeholder values - you will need to tune these!
-ControllerSettings lateral_controller(8, 0, 25, 3, 1, 100, 3, 500, 15);
-ControllerSettings angular_controller(4, 0, 35, 3, 1, 100, 3, 500, 0);
+ControllerSettings lateral_controller(8.5, 0, 32, 3, 1, 100, 3, 500, 15);
+ControllerSettings angular_controller(2.1, 0, 12.5, 3, 1, 100, 3, 500, 0);
 
 // --- Initialize Chassis ---
 Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
@@ -54,7 +54,7 @@ void on_center_button() {
  */
 void initialize() {
     lcd::initialize();
-    lcd::set_text(1, "Hello BH Student!");
+    lcd::set_text(1, "Isabella is very tall! Effie was here!");
     lcd::register_btn1_cb(on_center_button);
 
     //Encoder Limits
@@ -73,9 +73,7 @@ void disabled() {}
 
 void competition_initialize() {}
 
-void autonomous() {
-    follow_path();
-}
+void autonomous() {}
 
 void follow_path(){
     // 1. Set Start Position
