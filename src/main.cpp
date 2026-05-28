@@ -1,5 +1,7 @@
 #include "main.h"
 
+ASSET (path_txt);//means path.txt
+
 // --- Motors ---
 // Standard PROS motor groups. (Negative ports reverse the motor)
 MotorGroup leftMotors({1, 9});
@@ -12,7 +14,7 @@ Motor trayLiftMotor(7);
 // --- Drivetrain Configuration ---
 Drivetrain drivetrain(&leftMotors, // left motor group
                       &rightMotors, // right motor group
-                      12.0, // track width (12 inches)
+                      10.5, // track width (10.5 inches)
                       Omniwheel::NEW_4, // using new 4" omnis
                       200, // drivetrain rpm
                       2); // horizontal drift (2 is standard for normal drive)
@@ -27,8 +29,8 @@ OdomSensors sensors(nullptr, // vertical tracking wheel 1
 
 // --- PID Controllers ---
 // Placeholder values - you will need to tune these!
-ControllerSettings lateral_controller(10, 0, 3, 3, 1, 100, 3, 500, 20);
-ControllerSettings angular_controller(2, 0, 10, 3, 1, 100, 3, 500, 0);
+ControllerSettings lateral_controller(8.5, 0, 32, 3, 1, 100, 3, 500, 15);
+ControllerSettings angular_controller(2.1, 0, 12.5, 3, 1, 100, 3, 500, 0);
 
 // --- Initialize Chassis ---
 Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
@@ -52,7 +54,7 @@ void on_center_button() {
  */
 void initialize() {
     lcd::initialize();
-    lcd::set_text(1, "Hello BH Student!");
+    lcd::set_text(1, "Isabella is very tall! Effie was here!");
     lcd::register_btn1_cb(on_center_button);
 
     //Encoder Limits
@@ -61,10 +63,10 @@ void initialize() {
 
     // Set Brakes
     intakeLiftMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    trayLiftMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD
+trayLiftMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     // Calibrate the chassis (calibrates the IMU and starts odometry)
-    );chassis.calibrate(); 
+    chassis.calibrate(); 
 }
 
 void disabled() {}
@@ -72,6 +74,20 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {}
+
+void follow_path(){
+    // 1. Set Start Position
+    // The X, Y, and Heading must exactly match the start of your HerryIO path!
+    chassis.setPose(0,0,0);
+
+    // 2. Follow the Path
+    // Parameters: (Asset Name, Lookahead Distance, Timeout in milliseconds)
+    chassis.follow(path_txt, 10, 10000);
+
+    // 3. Wait for Completion
+    // This prevents the robot frmo skipping to the next line of code before it finishes driving.
+    ;chassis.waitUntilDone();
+}
 
 /**
  * Runs the operator control code.
@@ -102,9 +118,7 @@ void opcontrol() {
 
         // --- Metric Movement Test (~30cm) ---
         if (master.get_digital_new_press(DIGITAL_X)) {
-            chassis.setPose(0, 0, 0);
-            chassis.moveToPoint(0, 11.81, 2000);
-            chassis.waitUntilDone();
+                follow_path();
         }
 
         //Intake Control 
