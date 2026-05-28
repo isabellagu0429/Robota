@@ -21,7 +21,7 @@ Drivetrain drivetrain(&leftMotors, // left motor group
 
 // --- Odometry Sensors ---
 Imu imu(17); 
-OdomSensors sensors(nullptr, // vertical tracking wheel 1
+OdomSensors sensors(nullptr, // vertical tracking wheel 1g
                     nullptr, // vertical tracking wheel 2
                     nullptr, // horizontal tracking wheel 1
                     nullptr, // horizontal tracking wheel 2
